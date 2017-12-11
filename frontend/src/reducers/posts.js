@@ -26,3 +26,12 @@ export function posts(state = initialState.posts, action) {
             return state;
     }
 }
+
+export function postCreating(state = [], action) {
+    switch (action.type) {
+        case 'POST_CREATING_SUCCESS':
+            return action.payload;
+        default:
+            return state;
+    }
+}

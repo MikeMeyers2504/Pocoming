@@ -14,12 +14,14 @@ class Post extends Component {
 				>
 					<div>
 						<h3>{post.title}</h3>
+						<h3>{this.props.categories}</h3>
 						<div>
           					<p className="votes">Votes: {post.voteScore}</p>
           					<button>Up</button> 
           					<button>Down</button> 
         				</div>
 						<p>{post.commentCount} comments</p>
+						<p>{post.category}</p>
 					</div>
 				</li>
 			);
@@ -28,7 +30,6 @@ class Post extends Component {
 }
 
 function mapStateToProps(state) {
-
 	return {
 		posts: state.posts
 	};

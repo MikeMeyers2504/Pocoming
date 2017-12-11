@@ -6,6 +6,18 @@ import { Link } from 'react-router-dom';
 import Post from '../containers/Post';
 
 class Categories extends Component {
+  /*constructor() {
+    super();
+    this.handleClick = this.handleClick.bind(this);
+  }*/
+
+  /*handleClick(e) {
+    e.preventDefault();
+    this.props.history.push('/newForm');
+  }*/
+
+  /*<button onClick={this.handleClick} >Add a new post</button>*/ // this is with return in render method
+
   static propTypes = {
         fetchCategories: PropTypes.func.isRequired,
         categories: PropTypes.array.isRequired,
@@ -29,7 +41,7 @@ class Categories extends Component {
             <div>
                 <div className="header">
                     <h1>Home</h1>
-                    <button>Add a new post</button>
+                    <Link to="/newForm">Add a new post</Link>
                 </div>
                 <div>
                 { this.props.categories.map((category) => (
@@ -42,7 +54,9 @@ class Categories extends Component {
                             <option value="time">Time</option>
                             <option value="votes">Votes</option>
                         </select>
-                        <Post/>
+                        <Post
+                            categories={category.name} 
+                        />
                     </div>
                 ))}
                 </div>

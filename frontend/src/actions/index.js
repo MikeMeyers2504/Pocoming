@@ -2,10 +2,55 @@ import axios from 'axios';
 
 const api = "http://localhost:3001";
 
+let id = function () {
+  // Math.random should be unique because of its seeding algorithm.
+  // Convert it to base 36 (numbers + letters), and grab the first 9 characters
+  // after the decimal.
+  return Math.random().toString(36).substr(2, 25);
+};
+
+let time = function () {
+    let date = Date.now();
+    let newDate = new Date(date).getTime();
+    return newDate;
+};
+
 export function selectPost(post) {
+    console.log(post);
   return {
     type: 'POST_SELECTED',
     payload: post
+  };
+}
+
+const config = { headers: {'Content-Type': 'application/json', 'Authorization': 'user'}};
+
+export const createPost = (post) => {
+    return (dispatch) => {
+        let fullPost = {post};
+        fullPost["id"] = id();
+        fullPost["timestamp"] = time();
+        fullPost["title"] = post.title;
+        fullPost["body"] = post.body;
+        fullPost["author"] = post.author;
+        fullPost["category"] = post.category;
+
+        return axios.post(api + '/posts', fullPost, config)
+        .then(response => {
+            dispatch(createPostSuccess(response.data))
+            console.log(response.data)
+        })
+        .catch(error => {
+            throw(error);
+        });
+    };
+};
+
+export function createPostSuccess(post) {
+    console.log(post);
+  return {
+    type: 'POST_CREATING_SUCCESS',
+    post
   };
 }
 
@@ -84,7 +129,7 @@ export const fetchCategories = () => {
         })
         .catch(error => {
             throw(error);
-            dispatch(postsHasErrored(true))
+            dispatch(categoriesHasErrored(true))
         });
     };
 };

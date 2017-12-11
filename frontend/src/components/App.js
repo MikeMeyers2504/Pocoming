@@ -6,6 +6,9 @@ import PostDetail from '../containers/PostDetail';
 import AllPosts from '../containers/AllPosts';
 import Categories from '../containers/Categories';
 
+import HomeScreen from '../containers/HomeScreen';
+import Form from '../containers/Form';
+
 class App extends Component {
 
   render(){
@@ -13,9 +16,10 @@ class App extends Component {
       <div className="container">
       	<BrowserRouter>
       		<div>
-            <Route exact path="/" component={Categories} />
-        		<Route exact path="/" component={AllPosts}/>
-            <Route path="/" component={PostDetail} />
+        		<Route exact path="/details" component={AllPosts}/>
+            <Route exact path="/details" component={PostDetail} />
+            <Route exact path="/" component={HomeScreen} />
+            <Route exact path="/newForm" component={Form} />
         	</div>
         </BrowserRouter>
       </div>

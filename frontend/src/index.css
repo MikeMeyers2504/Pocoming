@@ -21,3 +21,13 @@ body {
   display: inline-block;
   margin-right: 0.5em;
 }
+
+.form div {
+  margin-left: 40%; 
+  padding: 20px 0px 25px 0px;
+}
+
+.form {
+  margin-top: 10%;
+}
+
