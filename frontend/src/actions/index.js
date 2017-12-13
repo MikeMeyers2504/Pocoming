@@ -1,11 +1,10 @@
 import axios from 'axios';
+import { push, routeActions } from 'react-router-redux';
 
 const api = "http://localhost:3001";
+const config = { headers: {'Content-Type': 'application/json', 'Authorization': 'user'}};
 
 let id = function () {
-  // Math.random should be unique because of its seeding algorithm.
-  // Convert it to base 36 (numbers + letters), and grab the first 9 characters
-  // after the decimal.
   return Math.random().toString(36).substr(2, 25);
 };
 
@@ -23,7 +22,62 @@ export function selectPost(post) {
   };
 }
 
-const config = { headers: {'Content-Type': 'application/json', 'Authorization': 'user'}};
+/*export function fetchPost(id) {
+    return dispatch => {
+        dispatch(fetchPostRequest())
+        axios.get(`/api/post/${id}`)
+        .then(res => {
+            dispatch(fetchPostSuccess(res.data))
+            dispatch(push('/postView')) // do the routing here
+        })
+        .catch(err => {
+            dispatch(fetchPostFailure(err))
+        })
+    }
+}
+
+function fetchPostRequest() {
+    return {
+        type: "FETCH_POST_REQUEST"
+    }
+}
+
+function fetchPostSuccess(data) {
+    return {
+        type: "FETCH_POST_SUCCESS",
+        data
+    }
+}
+
+function fetchPostFailure(err) {
+    return {
+        type: "FETCH_POST_FAILURE",
+        err
+    }
+}*/
+
+export const votePost = (post) => async dispatch => {
+    let vote = new Object();
+    vote["option"] = "upVote";
+    console.log(vote.option);       
+    const res = await axios.post(api + '/posts/' + post.id, vote, config)
+    dispatch({ type: 'VOTE_UP_SUCCESS', payload: post });
+}
+
+/*export const votePost = (post) => async dispatch => {
+        let vote = new Object();
+        vote["option"] = "upVote";
+        console.log(vote.option);       
+        const res = await axios.post(api + '/posts/' + post.id, vote, config)
+        dispatch(votePostSuccess(post))
+};
+
+export function votePostSuccess(post) {
+  return {
+    type: 'VOTE_UP_SUCCESS',
+    post
+  };
+}*/
 
 export const createPost = (post) => {
     return (dispatch) => {
@@ -38,7 +92,6 @@ export const createPost = (post) => {
         return axios.post(api + '/posts', fullPost, config)
         .then(response => {
             dispatch(createPostSuccess(response.data))
-            console.log(response.data)
         })
         .catch(error => {
             throw(error);
@@ -47,7 +100,6 @@ export const createPost = (post) => {
 };
 
 export function createPostSuccess(post) {
-    console.log(post);
   return {
     type: 'POST_CREATING_SUCCESS',
     post

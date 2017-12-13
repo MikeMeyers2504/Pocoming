@@ -30,6 +30,18 @@ export function posts(state = initialState.posts, action) {
 export function postCreating(state = [], action) {
     switch (action.type) {
         case 'POST_CREATING_SUCCESS':
+            return action.post;
+        /*case 'VOTE_UP_SUCCESS':
+            return action.payload;*/
+        default:
+            return state;
+    }
+    return state;
+}
+
+export function postVoting(state = [], action) {
+    switch (action.type) {
+        case 'VOTE_UP_SUCCESS':
             return action.payload;
         default:
             return state;

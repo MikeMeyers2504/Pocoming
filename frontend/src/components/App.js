@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter,Route } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 
 import Post from '../containers/Post';
 import PostDetail from '../containers/PostDetail';
@@ -8,6 +8,7 @@ import Categories from '../containers/Categories';
 
 import HomeScreen from '../containers/HomeScreen';
 import Form from '../containers/Form';
+import Test from '../containers/Test';
 
 class App extends Component {
 
@@ -20,6 +21,7 @@ class App extends Component {
             <Route exact path="/details" component={PostDetail} />
             <Route exact path="/" component={HomeScreen} />
             <Route exact path="/newForm" component={Form} />
+            <Route exact path="/test" component={Test} />
         	</div>
         </BrowserRouter>
       </div>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { postsFetchData, fetchCategories, selectPost } from '../actions/index';
+import { postsFetchData, fetchCategories, selectPost, votePost } from '../actions/index';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
@@ -63,6 +63,7 @@ class HomeScreen extends Component {
                                         onSelect={() => {
                                             selectPost(post)
                                         }}
+                                        onVote={votePost(post)}
                                     />
                                 </div>
                             ))}
@@ -90,9 +91,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         fetchPosts: () => dispatch(postsFetchData()),
         fetchCategories: () => dispatch(fetchCategories()),
-        selectPost: (data) => dispatch(selectPost(data))
+        selectPost: (data) => dispatch(selectPost(data)),
+        votePost: (data) => dispatch(votePost(data)),
     };
-
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
