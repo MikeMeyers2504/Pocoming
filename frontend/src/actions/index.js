@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { push, routeActions } from 'react-router-redux';
 
 const api = "http://localhost:3001";
 const config = { headers: {'Content-Type': 'application/json', 'Authorization': 'user'}};
@@ -22,40 +21,6 @@ export function selectPost(post) {
   };
 }
 
-/*export function fetchPost(id) {
-    return dispatch => {
-        dispatch(fetchPostRequest())
-        axios.get(`/api/post/${id}`)
-        .then(res => {
-            dispatch(fetchPostSuccess(res.data))
-            dispatch(push('/postView')) // do the routing here
-        })
-        .catch(err => {
-            dispatch(fetchPostFailure(err))
-        })
-    }
-}
-
-function fetchPostRequest() {
-    return {
-        type: "FETCH_POST_REQUEST"
-    }
-}
-
-function fetchPostSuccess(data) {
-    return {
-        type: "FETCH_POST_SUCCESS",
-        data
-    }
-}
-
-function fetchPostFailure(err) {
-    return {
-        type: "FETCH_POST_FAILURE",
-        err
-    }
-}*/
-
 export const votePost = (post) => async dispatch => {
     let vote = new Object();
     vote["option"] = "upVote";
@@ -63,21 +28,6 @@ export const votePost = (post) => async dispatch => {
     const res = await axios.post(api + '/posts/' + post.id, vote, config)
     dispatch({ type: 'VOTE_UP_SUCCESS', payload: post });
 }
-
-/*export const votePost = (post) => async dispatch => {
-        let vote = new Object();
-        vote["option"] = "upVote";
-        console.log(vote.option);       
-        const res = await axios.post(api + '/posts/' + post.id, vote, config)
-        dispatch(votePostSuccess(post))
-};
-
-export function votePostSuccess(post) {
-  return {
-    type: 'VOTE_UP_SUCCESS',
-    post
-  };
-}*/
 
 export const createPost = (post) => {
     return (dispatch) => {

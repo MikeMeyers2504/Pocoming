@@ -7,7 +7,7 @@ import { reducer as reduxFormReducer } from 'redux-form';
 const rootReducer = combineReducers({
   form: reduxFormReducer,
   activePost: ActivePost,
-  postVotes: postVoting,
+  postVoting: postVoting,
   posts: posts,
   postsHasErrored: postsHasErrored,
   postsIsLoading: postsIsLoading,

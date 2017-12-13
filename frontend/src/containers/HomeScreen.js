@@ -63,7 +63,6 @@ class HomeScreen extends Component {
                                         onSelect={() => {
                                             selectPost(post)
                                         }}
-                                        onVote={votePost(post)}
                                     />
                                 </div>
                             ))}
@@ -92,7 +91,6 @@ const mapDispatchToProps = (dispatch) => {
         fetchPosts: () => dispatch(postsFetchData()),
         fetchCategories: () => dispatch(fetchCategories()),
         selectPost: (data) => dispatch(selectPost(data)),
-        votePost: (data) => dispatch(votePost(data)),
     };
 };
 
