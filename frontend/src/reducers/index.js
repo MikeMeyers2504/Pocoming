@@ -3,6 +3,7 @@ import ActivePost from './reducer_active_post';
 import { posts, postsHasErrored, postsIsLoading, postCreating, postVoting } from './posts';
 import { categories, categoriesHasErrored, categoriesIsLoading } from './categories';
 import { reducer as reduxFormReducer } from 'redux-form';
+import votedPostReducer from "./votedPostReducer";
 
 const rootReducer = combineReducers({
   form: reduxFormReducer,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
   post: postCreating,
   categories: categories,
   categoriesHasErrored: categoriesHasErrored,
-  categoriesIsLoading: categoriesIsLoading
+  categoriesIsLoading: categoriesIsLoading,
+  votedPost: votedPostReducer,
 });
 
 export default rootReducer;
