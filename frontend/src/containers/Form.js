@@ -1,6 +1,6 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { Field, reduxForm } from 'redux-form'
+import React from 'react';
+import { connect } from 'react-redux';
+import { Field, reduxForm } from 'redux-form';
 import { createPost } from '../actions/index';
 
 class MyForm extends React.Component {

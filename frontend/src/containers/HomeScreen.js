@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { postsFetchData, fetchCategories, selectPost, votePost } from '../actions/index';
+import { postsFetchData, fetchCategories, selectPost } from '../actions/index';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
@@ -58,11 +58,11 @@ class HomeScreen extends Component {
                         <div>
                             {posts.filter(post => post.category === category.name).map((post) => (
                                 <div key={post.id}>
-                                    <SinglePost
-                                        post={post} 
+                                    <SinglePost 
                                         onSelect={() => {
                                             selectPost(post)
                                         }}
+                                        postId={post.id}
                                     />
                                 </div>
                             ))}

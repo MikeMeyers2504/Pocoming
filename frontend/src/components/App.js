@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 
-import Post from '../containers/Post';
+//import Post from '../containers/Post';
 import PostDetail from '../containers/PostDetail';
 import AllPosts from '../containers/AllPosts';
-import Categories from '../containers/Categories';
+//import Categories from '../containers/Categories';
 
 import HomeScreen from '../containers/HomeScreen';
 import Form from '../containers/Form';
