@@ -24,17 +24,19 @@ export function selectPost(post) {
 export const voteUpPost = (post) => async dispatch => {
     let vote = {};
     vote["option"] = "upVote";
-    console.log(vote.option);       
+    console.log(vote.option);
     const res = await axios.post(api + '/posts/' + post.id, vote, config)
     dispatch({ type: 'VOTE_UP_SUCCESS', payload: res.data });
+    dispatch({ type: 'VOTED_POST', payload: res.data });
 }
 
 export const voteDownPost = (post) => async dispatch => {
-    let vote = {};
-    vote["option"] = "downVote";
-    console.log(vote.option);       
-    const res = await axios.post(api + '/posts/' + post.id, vote, config)
-    dispatch({ type: 'VOTE_DOWN_SUCCESS', payload: res.data });
+  let vote = {};
+  vote["option"] = "downVote";
+  console.log(vote.option);
+  const res = await axios.post(api + '/posts/' + post.id, vote, config)
+  dispatch({ type: 'VOTE_DOWN_SUCCESS', payload: res.data });
+  dispatch({ type: 'VOTED_POST', payload: res.data });
 }
 
 export const createPost = (post) => {
@@ -46,7 +48,7 @@ export const createPost = (post) => {
         fullPost["body"] = post.body;
         fullPost["author"] = post.author;
         fullPost["category"] = post.category;
-        
+
         return axios.post(api + '/posts', fullPost, config)
         .then(response => {
             dispatch(createPostSuccess(response.data))
