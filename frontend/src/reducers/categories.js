@@ -1,6 +1,7 @@
 import initialState from './initialState';
 
-export function categories(state = initialState.categories, action) {  
+// mag er later uit 
+export function categories(state = [], action) {  
   switch(action.type) {
     case 'FETCH_CATEGORIES_SUCCESS':
       return action.categories;
@@ -9,20 +10,13 @@ export function categories(state = initialState.categories, action) {
   }
 }
 
-export function categoriesHasErrored(state = false, action) {
-    switch (action.type) {
-        case 'CATEGORIES_HAS_ERRORED':
-            return action.hasErrored;
-        default:
-            return state;
-    }
-}
-
-export function categoriesIsLoading(state = false, action) {
-    switch (action.type) {
-        case 'CATEGORIES_IS_LOADING':
-            return action.isLoading;
-        default:
-            return state;
-    }
-}
+export function getCategories(state = initialState.categories, action) {
+  switch(action.type) {
+    case 'FETCH_CATEGORIES_SUCCESS':
+      return {
+        categories: action.categories
+      }
+    default:
+      return state
+  }
+}     

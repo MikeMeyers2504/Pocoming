@@ -9,59 +9,72 @@ import SinglePost from './SinglePost';
 class HomeScreen extends Component {
     static propTypes = {
         fetchPosts: PropTypes.func.isRequired,
-        posts: PropTypes.array.isRequired,
-        postsHasErrored: PropTypes.bool.isRequired,
-        postsIsLoading: PropTypes.bool.isRequired,
+        posts: PropTypes.object.isRequired,
 
         fetchCategories: PropTypes.func.isRequired,
-        categories: PropTypes.array.isRequired,
-        categoriesHasErrored: PropTypes.bool.isRequired,
-        categoriesIsLoading: PropTypes.bool.isRequired
+        categories: PropTypes.object.isRequired,
     }
 
-    componentDidMount() {
-        this.props.fetchPosts();
-        this.props.fetchCategories();
+    state = {
+        categories: [],
+        posts: []
+    }
+
+    componentWillMount() {
+        this.props.fetchPosts()
+        .then(data => {
+            this.setState({posts: data.posts})
+        })
+        this.props.fetchCategories()
+        .then(data => {
+            this.setState({categories: data.categories})
+        })
+    }
+
+    sortPosts(type) {
+        console.log("begin" + this.state.posts);
+        switch(type) {
+            case 'votes':
+                return this.setState((oldState) => ({
+                    posts: oldState.posts.sort((a, b) => {
+                        return a.voteScore < b.voteScore;
+                    })
+                }))
+            case 'time':
+                console.log("time" + this.state.posts);
+                return this.setState((oldState) => ({
+                    posts: oldState.posts.sort((a, b) => {
+                        return a.timestamp < b.timestamp;
+                    })
+                }))
+            default:
+                return this.state;               
+        }
     }
 
     render() {
-        const { posts, categories } = this.props;
-        if (this.props.categoriesHasErrored) {
-            return <p>Sorry! There was an error loading the categories</p>;
-        }
-        if (this.props.categoriesIsLoading) {
-            return <p>Loading categories …</p>;
-        }
-        if (this.props.postsHasErrored) {
-            return <p>Sorry! There was an error loading the posts</p>;
-        }
-
-        if (this.props.postsIsLoading) {
-            return <p>Loading posts …</p>;
-        }
+        const { categories, posts } = this.state;
         return (
             <div>
-                <div className="header">
+                <div className="myHeader">
                     <h1>Home</h1>
-                    <Link to="/newForm">Add a new post</Link>
+                    <div>
+                        <Link to="/newForm">Add a new post</Link>
+                    </div>
+                    <button className="sorting" onClick={() => this.sortPosts("time")}>Sort posts by time</button>
+                    <button className="sorting" onClick={() => this.sortPosts("votes")}>Sort posts by votes</button>
                 </div>
-                { categories.map((category) => (
+                {categories.map((category) => (
                     <div key={category.path} className="categories">
-                        <h2>
-                            {category.name}
-                        </h2>
-                        <select>
-                            <option value="title">Sort posts by ...</option>
-                            <option value="time">Time</option>
-                            <option value="votes">Votes</option>
-                        </select>
+                        <Link to={`/categories/${category.path}`}>
+                            <h3>
+                                {category.name}
+                            </h3>
+                        </Link>
                         <div>
                             {posts.filter(post => post.category === category.name).map((post) => (
-                                <div key={post.id}>
+                                <div key={post.id} className="post">
                                     <SinglePost 
-                                        onSelect={() => {
-                                            selectPost(post)
-                                        }}
                                         postId={post.id}
                                     />
                                 </div>
@@ -76,13 +89,8 @@ class HomeScreen extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        posts: state.posts,
-        postsHasErrored: state.postsHasErrored,
-        postsIsLoading: state.postsIsLoading,
-
-        categories: state.categories,
-        categoriesHasErrored: state.categoriesHasErrored,
-        categoriesIsLoading: state.categoriesIsLoading
+        posts: state.getPosts,
+        categories: state.getCategories,
     };
 };
 

@@ -1,22 +1,18 @@
 import { combineReducers } from 'redux';
-import ActivePost from './reducer_active_post';
-import { posts, postsHasErrored, postsIsLoading, postCreating, postVoting } from './posts';
-import { categories, categoriesHasErrored, categoriesIsLoading } from './categories';
+import { posts, getPosts } from './posts';
+import { categories, getCategories } from './categories';
 import { reducer as reduxFormReducer } from 'redux-form';
 import votedPostReducer from "./votedPostReducer";
+import ActivePost from "./ActivePost";
 
 const rootReducer = combineReducers({
   form: reduxFormReducer,
-  activePost: ActivePost,
-  postVoting: postVoting,
   posts: posts,
-  postsHasErrored: postsHasErrored,
-  postsIsLoading: postsIsLoading,
-  post: postCreating,
   categories: categories,
-  categoriesHasErrored: categoriesHasErrored,
-  categoriesIsLoading: categoriesIsLoading,
   votedPost: votedPostReducer,
+  activePost: ActivePost,
+  getCategories,
+  getPosts
 });
 
 export default rootReducer;

@@ -1,15 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { selectPost} from '../actions/index';
+import { selectPost, postsFetchData} from '../actions/index';
 import { bindActionCreators } from 'redux';
+import { Link } from 'react-router-dom';
 
 class Post extends Component {
+	state = {
+        posts: []
+    }
+
+    componentWillMount() {
+        this.props.fetchPosts()
+        .then(data => {
+            this.setState({posts: data.posts})
+        })
+    }
+
 	render() {
-		return this.props.posts.map((post) => {
+		return this.state.posts.map((post) => {
 			return (
 				<li 
-					key={post.id} 
-					onClick={() => this.props.selectPost(post)} 
+					key={post.id}  
 					className="list-group-item"
 				>
 					<div>
@@ -22,6 +33,9 @@ class Post extends Component {
         				</div>
 						<p>{post.commentCount} comments</p>
 						<p>{post.category}</p>
+						<Link to={'/postDetails'}>
+                            <button onClick={() => this.props.selectPost(post)}>Go to</button>
+                        </Link>
 					</div>
 				</li>
 			);
@@ -31,12 +45,12 @@ class Post extends Component {
 
 function mapStateToProps(state) {
 	return {
-		posts: state.posts
+		posts: state.getPosts
 	};
 }
 
 function mapDispatchToProps(dispatch) {
-	return bindActionCreators({ selectPost: selectPost}, dispatch)
+	return bindActionCreators({ selectPost: selectPost, fetchPosts: postsFetchData}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post);

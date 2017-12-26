@@ -7,24 +7,21 @@ import Post from './Post';
 class AllPosts extends Component {
     static propTypes = {
         fetchPosts: PropTypes.func.isRequired,
-        posts: PropTypes.array.isRequired,
-        hasErrored: PropTypes.bool.isRequired,
-        isLoading: PropTypes.bool.isRequired
+        posts: PropTypes.object.isRequired,
     }
 
-    componentDidMount() {
-        this.props.fetchPosts();
+    state = {
+        posts: []
+    }
+
+    componentWillMount() {
+        this.props.fetchPosts()
+        .then(data => {
+            this.setState({posts: data.posts})
+        })
     }
 
     render() {
-        if (this.props.hasErrored) {
-            return <p>Sorry! There was an error loading the posts</p>;
-        }
-
-        if (this.props.isLoading) {
-            return <p>Loading…</p>;
-        }
-
         return (
             <div>
                 <ul>
@@ -37,9 +34,7 @@ class AllPosts extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        posts: state.posts,
-        hasErrored: state.postsHasErrored,
-        isLoading: state.postsIsLoading
+        posts: state.getPosts,
     };
 };
 
