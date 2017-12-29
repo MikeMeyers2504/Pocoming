@@ -85,4 +85,28 @@ export const deletePost = (post) => (dispatch) => {
 export const deletePostApi= (post) => {
   return axios.delete(`${api}/posts/${post.id}`, {headers: {Authorization: 'user'}})
   .then(response => response.data)
+  .catch(error => {
+      throw(error);
+  }); 
+};
+
+export const editPostAction = (post) => {
+   return {       
+     type: 'EDIT_POST_SUCCESS',        
+     post
+   }       
+  }     
+        
+export const editPost = (post) => (dispatch) => {
+  return editPostApi(post)
+  .then((post) => dispatch(editPostAction(post)))
+}
+
+export const editPostApi= (post) => {
+  console.log(post);
+  return axios.put(`${api}/posts/${post.id}`, post, config)
+  .then(response => response.data)
+  .catch(error => {
+      throw(error);
+  }); 
 };

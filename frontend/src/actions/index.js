@@ -1,5 +1,6 @@
 export * from './categories';
 export * from './posts';
+export * from './comments';
 
 // sync action
 /*export const fetchCategoriesSuccess = (categories) => {

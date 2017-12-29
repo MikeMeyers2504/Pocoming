@@ -32,7 +32,6 @@ class HomeScreen extends Component {
     }
 
     sortPosts(type) {
-        console.log("begin" + this.state.posts);
         switch(type) {
             case 'votes':
                 return this.setState((oldState) => ({

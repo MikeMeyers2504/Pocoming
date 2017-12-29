@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { voteUpPost, voteDownPost, postsFetchData, deletePost } from '../actions/index';
+import { voteUpPost, voteDownPost, postsFetchData, deletePost, fetchComments, deleteComment } from '../actions/index';
 import { Link } from 'react-router-dom';
 
 class PostDetail extends Component {
@@ -9,6 +9,7 @@ class PostDetail extends Component {
     this.state = {
       votes: null,
       posts: [],
+      comments: [],
     }
   }
 
@@ -16,6 +17,10 @@ class PostDetail extends Component {
         this.props.fetchPosts()
         .then(data => {
           this.setState({posts: data.posts})
+        })
+        this.props.fetchComments(this.props.post)
+        .then(data => {
+          this.setState({comments: data.comments})
         })
     }
 
@@ -42,7 +47,8 @@ class PostDetail extends Component {
     }
 
   render(){
-  	if (!this.props.post) {
+    const { comments } = this.state;
+    if (!this.props.post) {
   		return <div>In the home screen click on "Details" to see the post details</div>;
   	}
     return(
@@ -57,15 +63,42 @@ class PostDetail extends Component {
           <button onClick={() => this.props.voteUpPost(this.props.post)}>Up</button> 
           <button onClick={() => this.props.voteDownPost(this.props.post)}>Down</button> 
         </div>
-        <div>
-          <p>Comments: {this.props.post.commentCount} </p>
-          <button>Add new comment</button>
-        </div>
         <Link to="/editForm">
             <button>Edit post</button>
         </Link>
         <Link to="/">
             <button onClick={() => this.props.deletePost(this.props.post)}>Delete post</button>
+        </Link>
+        <div>
+          <p>Total number of comments: {this.props.post.commentCount} </p>         
+        </div>
+        <div>
+          <p> comments: </p>
+          <ol>
+            {comments.map((comment) => {
+            return (
+              <li key={comment.id}>
+                <div>
+                  <h4>{comment.body}</h4>
+                  <p>{comment.author}</p>
+                  <p>Timestamp: {new Date(comment.timestamp).toLocaleDateString()}</p>
+                  <div>
+                    <p>Vote Score: {comment.voteScore} </p>
+                    <button>Up</button> 
+                    <button>Down</button> 
+                  </div>
+                  <button>Edit</button>
+                  <Link to="/">
+                    <button onClick={() => this.props.deleteComment(comment)}>Delete</button>
+                  </Link> 
+                </div>
+              </li>
+            )
+          })}
+          </ol>
+        </div>
+        <Link to="/postDetails/newComment">
+            <button>Add new comment</button>
         </Link>
       </div>
     );
@@ -77,6 +110,7 @@ function mapStateToProps(state) {
 		post: state.activePost,
     posts: state.getPosts,
     votedPost: state.votedPost,
+    comments: state.comments,
 	};
 }
 
@@ -86,6 +120,8 @@ const mapDispatchToProps = (dispatch) => {
         voteDownPost: (data) => dispatch(voteDownPost(data)),
         fetchPosts: () => dispatch(postsFetchData()),
         deletePost: (data) => dispatch(deletePost(data)), 
+        fetchComments: (data) => dispatch(fetchComments(data)),
+        deleteComment: (data) => dispatch(deleteComment(data)),
     };
 };
 

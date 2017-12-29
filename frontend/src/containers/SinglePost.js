@@ -50,7 +50,7 @@ class SinglePost extends Component{
         )
       }
       if (posts) {
-        return posts.map((post, index) => {
+        return posts.filter(post => post.deleted === false).map((post, index) => {
           if (post.id === postId) {
             return (
               <li key={post.id} className="list-group-item">

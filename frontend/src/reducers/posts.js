@@ -20,7 +20,9 @@ export function getPosts(state = initialState.posts, action) {
     case 'POST_CREATING_SUCCESS':
       return action.post;
     case 'DELETE_POST_SUCCESS':
-      return action.post
+      return action.post;
+    case 'EDIT_POST_SUCCESS':
+      return action.post;
     default:
       return state
   }

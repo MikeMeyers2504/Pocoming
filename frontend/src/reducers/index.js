@@ -4,6 +4,7 @@ import { categories, getCategories } from './categories';
 import { reducer as reduxFormReducer } from 'redux-form';
 import votedPostReducer from "./votedPostReducer";
 import ActivePost from "./ActivePost";
+import { comments } from './comments';
 
 const rootReducer = combineReducers({
   form: reduxFormReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   votedPost: votedPostReducer,
   activePost: ActivePost,
   getCategories,
-  getPosts
+  getPosts,
+  comments,
 });
 
 export default rootReducer;
