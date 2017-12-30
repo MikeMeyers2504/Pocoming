@@ -12,6 +12,7 @@ import EditForm from '../containers/EditForm';
 import Test from '../containers/Test';
 import CategoryView from '../containers/CategoryView';
 import newComment from '../containers/AddComment';
+import EditComment from '../containers/EditComment';
 
 class App extends Component {
 
@@ -22,6 +23,7 @@ class App extends Component {
       		<div>
             <Route exact path="/postDetails" component={PostDetail} />
             <Route exact path="/postDetails/newComment" component={newComment} />
+            <Route exact path="/postDetails/editComment" component={EditComment} />
             <Route exact path="/" component={HomeScreen} />
             <Route exact path="/newForm" component={Form} />
             <Route exact path="/editForm" component={EditForm} />

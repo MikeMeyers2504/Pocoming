@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { voteUpPost, voteDownPost, postsFetchData, deletePost, fetchComments, deleteComment } from '../actions/index';
+import { voteUpPost, voteDownPost, postsFetchData, deletePost, fetchComments, deleteComment, selectComment, voteUpComment, voteDownComment } from '../actions/index';
 import { Link } from 'react-router-dom';
 
 class PostDetail extends Component {
@@ -10,6 +10,7 @@ class PostDetail extends Component {
       votes: null,
       posts: [],
       comments: [],
+      votesComment: null,
     }
   }
 
@@ -18,10 +19,12 @@ class PostDetail extends Component {
         .then(data => {
           this.setState({posts: data.posts})
         })
-        this.props.fetchComments(this.props.post)
-        .then(data => {
-          this.setState({comments: data.comments})
-        })
+        if (this.props.post) {
+            this.props.fetchComments(this.props.post)
+              .then(data => {
+                this.setState({comments: data.comments})
+              })
+        }
     }
 
     componentDidMount() {
@@ -29,6 +32,13 @@ class PostDetail extends Component {
         this.state.posts.map((post) => {
           if (post.id === this.props.post.id) {
             this.setState({ votes: this.props.post.voteScore });
+            if (this.state.comments) {
+              this.state.comments.map((comment) => {
+                if (post.id === comment.parentId) {
+                  this.setState({ votesComment: this.props.comment.voteScore });
+                }
+              })
+            }
           }
         })
       }
@@ -43,16 +53,25 @@ class PostDetail extends Component {
             this.setState(() => ({ votes: nextProps.votedPost.voteScore, posts: newState})); 
           }
         }
+        if (this.state.comments) {
+          this.state.comments.map((comment, index) => {
+            if (nextProps.votedComment.parentId === post.id) {
+              const newStateComments = this.state.comments;
+              newStateComments[index].voteScore = nextProps.votedComment.voteScore;
+              this.setState(() => ({ votesComment: nextProps.votedComment.voteScore, comments: newStateComments}));
+            }
+          })
+        }
       })
     }
 
   render(){
     const { comments } = this.state;
     if (!this.props.post) {
-  		return <div>In the home screen click on "Details" to see the post details</div>;
+  		return <h2>In the home screen click on "Details" to see the post details</h2>;
   	}
     return(
-      <div>
+      <div className="postDetail">
         <h1>Post detail view</h1>
         <div>Title: {this.props.post.title}</div>
         <div>Body: {this.props.post.body}</div>
@@ -72,8 +91,7 @@ class PostDetail extends Component {
         <div>
           <p>Total number of comments: {this.props.post.commentCount} </p>         
         </div>
-        <div>
-          <p> comments: </p>
+        <div className="commentsArea">
           <ol>
             {comments.map((comment) => {
             return (
@@ -83,11 +101,13 @@ class PostDetail extends Component {
                   <p>{comment.author}</p>
                   <p>Timestamp: {new Date(comment.timestamp).toLocaleDateString()}</p>
                   <div>
-                    <p>Vote Score: {comment.voteScore} </p>
-                    <button>Up</button> 
-                    <button>Down</button> 
+                    <p>Vote Score: {this.state.votesComment !== null ? this.state.votesComment : comment.voteScore} </p>
+                    <button onClick={() => this.props.voteUpComment(comment)}>Up</button> 
+                    <button onClick={() => this.props.voteDownComment(comment)}>Down</button> 
                   </div>
-                  <button>Edit</button>
+                  <Link to="/postDetails/editComment">
+                      <button onClick={() => this.props.selectComment(comment)}>Edit</button>
+                  </Link>
                   <Link to="/">
                     <button onClick={() => this.props.deleteComment(comment)}>Delete</button>
                   </Link> 
@@ -110,6 +130,7 @@ function mapStateToProps(state) {
 		post: state.activePost,
     posts: state.getPosts,
     votedPost: state.votedPost,
+    votedComment: state.votedComment,
     comments: state.comments,
 	};
 }
@@ -122,6 +143,9 @@ const mapDispatchToProps = (dispatch) => {
         deletePost: (data) => dispatch(deletePost(data)), 
         fetchComments: (data) => dispatch(fetchComments(data)),
         deleteComment: (data) => dispatch(deleteComment(data)),
+        selectComment: (data) => dispatch(selectComment(data)),
+        voteUpComment: (data) => dispatch(voteUpComment(data)),
+        voteDownComment: (data) => dispatch(voteDownComment(data)),
     };
 };
 

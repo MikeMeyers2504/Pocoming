@@ -60,3 +60,16 @@ body {
 .list-group-item {
   list-style-type: none;
 }
+
+.postDetail {
+  text-align: center;
+  margin: 2em auto 2em auto;
+}
+
+.commentsArea {
+  width: 20%;
+  text-align: center;
+  background: yellow;
+  display: inline-block;
+  vertical-align: top;
+}

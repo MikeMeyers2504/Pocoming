@@ -31,6 +31,16 @@ class HomeScreen extends Component {
         })
     }
 
+    componentWillReceiveProps(nextProps) { 
+      this.state.posts.map((post, index) => {
+        if (post.id === nextProps.votedPost.id) {
+            const newState = this.state.posts;
+            newState[index].voteScore = nextProps.votedPost.voteScore;
+            this.setState(() => ({ posts: newState})); 
+        }
+      })
+    }
+
     sortPosts(type) {
         switch(type) {
             case 'votes':
@@ -90,6 +100,7 @@ const mapStateToProps = (state) => {
     return {
         posts: state.getPosts,
         categories: state.getCategories,
+        votedPost: state.votedPost,
     };
 };
 

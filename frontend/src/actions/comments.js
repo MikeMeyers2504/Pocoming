@@ -8,9 +8,11 @@ export const getCommentsApi = (post) => {
 };
 
 export const fetchComments = (post) => (dispatch) => {
-    return getCommentsApi(post)
+    if (post) {
+      return getCommentsApi(post)
         .then((comments) => dispatch(getComments(comments)))
         .catch(error => {throw(error);})
+    }
 };
 
 export const getComments = (comments) => {
@@ -66,3 +68,48 @@ export const deleteCommentApi= (comment) => {
       throw(error);
   }); 
 };
+
+export const editCommentAction = (comment) => {
+   return {       
+     type: 'EDIT_COMMENT_SUCCESS',        
+     comment
+   }       
+  }     
+        
+export const editComment = (comment) => (dispatch) => {
+  return editCommentApi(comment)
+  .then((comment) => dispatch(editCommentAction(comment)))
+}
+
+export const editCommentApi= (comment) => {
+  console.log(comment);
+  return axios.put(`${api}/comments/${comment.id}`, comment, config)
+  .then(response => response.data)
+  .catch(error => {
+      throw(error);
+  }); 
+};
+
+export function selectComment(comment) {
+  console.log(comment);
+  return {
+    type: 'COMMENT_SELECTED',
+    payload: comment
+  };
+}
+
+export const voteUpComment = (comment) => async dispatch => {
+    let vote = {};
+    vote["option"] = "upVote";
+    console.log(vote.option);
+    const res = await axios.post(api + '/comments/' + comment.id, vote, config)
+    dispatch({ type: 'VOTED_COMMENT', payload: res.data});
+}
+
+export const voteDownComment = (comment) => async dispatch => {
+  let vote = {};
+  vote["option"] = "downVote";
+  console.log(vote.option);
+  const res = await axios.post(api + '/comments/' + comment.id, vote, config)
+  dispatch({ type: 'VOTED_COMMENT', payload: res.data });
+}

@@ -1,16 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
-import { createComment } from '../actions/index';
+import { editComment } from '../actions/index';
+import { time } from '../actions/extra';
 
-class AddComment extends Component {
+class EditComment extends Component {
   constructor(props) {
     super(props)
-    const { post } = props
-    this.state = {
-      parentId: post.id,
-    }
     this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  componentDidMount(){
+    if (this.props.comment) {
+        const { initialize} = this.props;
+        const obj = {
+          'body': this.props.comment.body,
+          'author': this.props.comment.author,
+        }
+        initialize(obj)
+    }else{
+        alert("Something has gone wrong, go back!");
+    }
   }
 
   handleSubmit = (e) => {
@@ -19,11 +29,16 @@ class AddComment extends Component {
       this.props.onSubmit({
           body: this.props.body,
           author: this.props.author,
-          parentId: this.state.parentId
+          parentDeleted: this.props.comment.parentDeleted,
+          parentId: this.props.comment.parentId,
+          deleted: this.props.comment.deleted,
+          id: this.props.comment.id,
+          timestamp: time(),
+          voteScore: this.props.comment.voteScore
         })
       return this.props.history.push("/");
     }else {
-      alert("You can't submit the comment with an empty field for body!");
+      alert("You can't submit the comment with an empty field for body or author!");
     } 
   }
 
@@ -40,7 +55,7 @@ class AddComment extends Component {
           <Field name="author" component="input" type="text" placeholder="Author"/>
         </div> 
         <div>
-          <button type='submit'>Create</button>
+          <button type='submit'>Edit</button>
         </div>
       </div>
     </form>
@@ -49,24 +64,24 @@ class AddComment extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const selector = formValueSelector('AddComment')
+    const selector = formValueSelector('EditComment')
     return {
         body: selector(state, 'body'),
         author: selector(state, 'author'),
         initialValues: null,
-        post: state.activePost,
+        comment: state.activeComment,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      onSubmit: (data) => {dispatch(createComment(data))}
+      onSubmit: (data) => {dispatch(editComment(data))}
   };
 };
 
 const myReduxForm = reduxForm({
-  form: 'AddComment', 
-})(AddComment)
+  form: 'EditComment', 
+})(EditComment)
 
 export default connect(
   mapStateToProps,

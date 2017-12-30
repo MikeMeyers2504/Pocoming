@@ -44,6 +44,9 @@ class EditForm extends Component {
 
   render() {
     const { categories, post } = this.props;
+    if (!post) {
+      return <h2>Please go back, something has gone bad</h2>;
+    }
     return (
     <form>
       <div className="form">
