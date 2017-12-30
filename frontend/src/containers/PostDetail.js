@@ -10,7 +10,6 @@ class PostDetail extends Component {
       votes: null,
       posts: [],
       comments: [],
-      votesComment: null,
     }
   }
 
@@ -32,14 +31,8 @@ class PostDetail extends Component {
         this.state.posts.map((post) => {
           if (post.id === this.props.post.id) {
             this.setState({ votes: this.props.post.voteScore });
-            if (this.state.comments) {
-              this.state.comments.map((comment) => {
-                if (post.id === comment.parentId) {
-                  this.setState({ votesComment: this.props.comment.voteScore });
-                }
-              })
-            }
           }
+          return this.state.votes;
         })
       }
     }
@@ -55,13 +48,19 @@ class PostDetail extends Component {
         }
         if (this.state.comments) {
           this.state.comments.map((comment, index) => {
-            if (nextProps.votedComment.parentId === post.id) {
+            if (nextProps.votedComment.id === comment.id) {
               const newStateComments = this.state.comments;
               newStateComments[index].voteScore = nextProps.votedComment.voteScore;
-              this.setState(() => ({ votesComment: nextProps.votedComment.voteScore, comments: newStateComments}));
+              this.setState(() => ({comments: newStateComments}));
             }
+            return this.state.comments;
           })
         }
+        return (
+          this.state.votes,
+          this.state.posts,
+          this.state.comments
+        )      
       })
     }
 
@@ -101,7 +100,7 @@ class PostDetail extends Component {
                   <p>{comment.author}</p>
                   <p>Timestamp: {new Date(comment.timestamp).toLocaleDateString()}</p>
                   <div>
-                    <p>Vote Score: {this.state.votesComment !== null ? this.state.votesComment : comment.voteScore} </p>
+                    <p>Vote Score: {comment.voteScore} </p>
                     <button onClick={() => this.props.voteUpComment(comment)}>Up</button> 
                     <button onClick={() => this.props.voteDownComment(comment)}>Down</button> 
                   </div>

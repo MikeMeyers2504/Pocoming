@@ -36,8 +36,9 @@ class HomeScreen extends Component {
         if (post.id === nextProps.votedPost.id) {
             const newState = this.state.posts;
             newState[index].voteScore = nextProps.votedPost.voteScore;
-            this.setState(() => ({ posts: newState})); 
+            this.setState(() => ({posts: newState})); 
         }
+        return this.state.posts;
       })
     }
 

@@ -43,7 +43,7 @@ class EditForm extends Component {
   }
 
   render() {
-    const { categories, post } = this.props;
+    const { post } = this.props;
     if (!post) {
       return <h2>Please go back, something has gone bad</h2>;
     }
@@ -88,7 +88,6 @@ const mapStateToProps = (state, ownProps) => {
         author: selector(state, 'author'),
         category: selector(state, 'category'),
         initialValues: null,
-        categories: state.categories,
         post: state.activePost,
     };
 };

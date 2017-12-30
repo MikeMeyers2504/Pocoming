@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import { posts, getPosts } from './posts';
-import { categories, getCategories } from './categories';
+import { getPosts } from './posts';
+import { getCategories } from './categories';
 import { reducer as reduxFormReducer } from 'redux-form';
 import votedPostReducer from "./votedPostReducer";
 import votedCommentReducer from "./votedCommentReducer";
@@ -10,8 +10,6 @@ import ActiveComment from "./ActiveComment";
 
 const rootReducer = combineReducers({
   form: reduxFormReducer,
-  posts: posts,
-  categories: categories,
   votedPost: votedPostReducer,
   votedComment: votedCommentReducer,
   activePost: ActivePost,

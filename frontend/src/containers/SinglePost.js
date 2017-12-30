@@ -25,6 +25,7 @@ class SinglePost extends Component{
           if (post.id === this.props.postId) {
             this.setState({ votes: post.voteScore });
           }
+          return this.state.votes;
         })
       }
     }
@@ -38,13 +39,17 @@ class SinglePost extends Component{
             this.setState(() => ({ votes: nextProps.votedPost.voteScore, posts: newState})); 
           }
         }
+        return (
+          this.state.votes,
+          this.state.posts
+        )
       })
     }
 
     render(){
       const { postId } = this.props;
       const { posts } = this.state;
-      if (posts === []) {
+      if (!posts) {
         return (
           <p>There are no posts</p>
         )
@@ -72,7 +77,7 @@ class SinglePost extends Component{
             );
           }
         });
-      }
+      }     
 	 }
 };
 

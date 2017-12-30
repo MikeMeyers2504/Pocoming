@@ -14,7 +14,6 @@ class MyForm extends Component {
   }
 
   render() {
-    const { handleSubmit, categories } = this.props;
     return (
     <form>
       <div className="form">
@@ -56,7 +55,6 @@ const mapStateToProps = (state, ownProps) => {
         author: selector(state, 'author'),
         category: selector(state, 'category'),
         initialValues: null,
-        categories: state.categories,
     };
 };
 
