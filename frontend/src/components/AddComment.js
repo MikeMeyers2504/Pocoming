@@ -7,8 +7,10 @@ class AddComment extends Component {
   constructor(props) {
     super(props)
     const { post } = props
-    this.state = {
-      parentId: post.id,
+    if (post) {
+      this.state = {
+        parentId: post.id,
+      }
     }
     this.handleSubmit = this.handleSubmit.bind(this)
   }
@@ -28,6 +30,9 @@ class AddComment extends Component {
   }
 
   render() {
+    if (!this.props.post) {
+      return <h2>Something has gone wrong, please go back.</h2>;
+    }
     return (
     <form onSubmit={this.handleSubmit}>
       <div className="form">

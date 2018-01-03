@@ -2,6 +2,14 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { voteUpPost, voteDownPost, postsFetchData, deletePost, fetchComments, deleteComment, selectComment, voteUpComment, voteDownComment } from '../actions/index';
 import { Link } from 'react-router-dom';
+import ThumbsD from 'react-icons/lib/ti/thumbs-down';
+import ThumbsU from 'react-icons/lib/ti/thumbs-up';
+import FaComment from 'react-icons/lib/fa/comment-o';
+import FaComments from 'react-icons/lib/fa/comments-o';
+import FaCalendar from 'react-icons/lib/fa/calendar';
+import User from 'react-icons/lib/ti/user-outline';
+import Edit from 'react-icons/lib/md/edit';
+import Remove from 'react-icons/lib/md/highlight-remove';
 
 class PostDetail extends Component {
   constructor(props) {
@@ -72,53 +80,63 @@ class PostDetail extends Component {
     return(
       <div className="postDetail">
         <h1>Post detail view</h1>
-        <div>Title: {this.props.post.title}</div>
-        <div>Body: {this.props.post.body}</div>
-        <div>Author: {this.props.post.author}</div>
-        <div>Timestamp: {new Date(this.props.post.timestamp).toLocaleDateString()}</div>
-        <div>
-          <p>Vote Score: {this.state.votes !== null ? this.state.votes : this.props.post.voteScore} </p>
-          <button onClick={() => this.props.voteUpPost(this.props.post)}>Up</button> 
-          <button onClick={() => this.props.voteDownPost(this.props.post)}>Down</button> 
+        <div className="detailsArea">         
+          <p>Title: {this.props.post.title}</p>
+          <p>Body: {this.props.post.body}</p>
+          <p><User size={20}/> : {this.props.post.author}</p>
+          <p><FaCalendar size={20}/> : {new Date(this.props.post.timestamp).toLocaleDateString()}</p>
+          <p>Total <FaComments size={20}/> : {this.props.post.commentCount} </p>         
+          <div>
+            <p className="votes">Vote Score: {this.state.votes !== null ? this.state.votes : this.props.post.voteScore} </p>
+            <button onClick={() => this.props.voteUpPost(this.props.post)}><ThumbsU size={20}/></button> 
+            <button onClick={() => this.props.voteDownPost(this.props.post)}><ThumbsD size={20}/></button> 
+          </div>
+          <div className="button">
+            <Link to="/editForm">
+                <button><Edit size={20}/></button>
+            </Link>
+          </div>
+          <div className="button">
+            <Link to="/">
+                <button onClick={() => this.props.deletePost(this.props.post)}><Remove size={20}/></button>
+            </Link>
+          </div>
         </div>
-        <Link to="/editForm">
-            <button>Edit post</button>
-        </Link>
-        <Link to="/">
-            <button onClick={() => this.props.deletePost(this.props.post)}>Delete post</button>
-        </Link>
-        <div>
-          <p>Total number of comments: {this.props.post.commentCount} </p>         
-        </div>
+
         <div className="commentsArea">
+          <h3>Comments</h3>
+          <Link to="/postDetails/newComment">
+            <button>Add new <FaComment/></button>
+          </Link>
           <ol>
             {comments.map((comment) => {
             return (
               <li key={comment.id}>
                 <div>
                   <h4>{comment.body}</h4>
-                  <p>{comment.author}</p>
-                  <p>Timestamp: {new Date(comment.timestamp).toLocaleDateString()}</p>
+                  <p><User size={20}/> : {comment.author}</p>
+                  <p><FaCalendar size={20}/> : {new Date(comment.timestamp).toLocaleDateString()}</p>
                   <div>
-                    <p>Vote Score: {comment.voteScore} </p>
-                    <button onClick={() => this.props.voteUpComment(comment)}>Up</button> 
-                    <button onClick={() => this.props.voteDownComment(comment)}>Down</button> 
+                    <p className="votes">Vote Score: {comment.voteScore} </p>
+                    <button onClick={() => this.props.voteUpComment(comment)}><ThumbsU size={20}/></button> 
+                    <button onClick={() => this.props.voteDownComment(comment)}><ThumbsD size={20}/></button> 
                   </div>
-                  <Link to="/postDetails/editComment">
-                      <button onClick={() => this.props.selectComment(comment)}>Edit</button>
-                  </Link>
-                  <Link to="/">
-                    <button onClick={() => this.props.deleteComment(comment)}>Delete</button>
-                  </Link> 
+                  <div className="button">
+                    <Link to="/postDetails/editComment">
+                        <button onClick={() => this.props.selectComment(comment)}><Edit size={20}/></button>
+                    </Link>
+                  </div>
+                  <div className="button">
+                    <Link to="/">
+                      <button onClick={() => this.props.deleteComment(comment)}><Remove size={20}/></button>
+                    </Link> 
+                  </div>
                 </div>
               </li>
             )
           })}
           </ol>
         </div>
-        <Link to="/postDetails/newComment">
-            <button>Add new comment</button>
-        </Link>
       </div>
     );
   }

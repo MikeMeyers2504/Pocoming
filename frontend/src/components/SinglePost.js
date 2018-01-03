@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { voteUpPost, voteDownPost, postsFetchData, selectPost } from '../actions/index';
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
+import ThumbsD from 'react-icons/lib/ti/thumbs-down';
+import ThumbsU from 'react-icons/lib/ti/thumbs-up';
 
 class SinglePost extends Component{
     constructor(props) {
@@ -61,14 +63,12 @@ class SinglePost extends Component{
               <li key={post.id} className="list-group-item">
                 <div>
                   <h3>{post.title}</h3>
-                  <h3>{index}</h3>
                   <div>
                     <p className="votes">Votes: {this.state.votes !== null ? this.state.votes : post.voteScore}</p>
-                    <button onClick={() => this.props.voteUpPost(post)}>Up</button>
-                    <button onClick={() => this.props.voteDownPost(post)}>Down</button>
+                    <button onClick={() => this.props.voteUpPost(post)}><ThumbsU size={20}/></button>
+                    <button onClick={() => this.props.voteDownPost(post)}><ThumbsD size={20}/></button>
                   </div>
                   <p>{post.commentCount} comments</p>
-                  <p>{post.category}</p>
                   <Link to="/postDetails">
                       <button onClick={() => this.props.selectPost(post)}>Details</button>
                   </Link>

@@ -3,8 +3,10 @@ import { connect } from 'react-redux';
 import { postsFetchData, fetchCategories, selectPost } from '../actions/index';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-
 import SinglePost from './SinglePost';
+import FaCalendar from 'react-icons/lib/fa/calendar';
+import MdAdd from 'react-icons/lib/md/add';
+import ThumbsUpDown from 'react-icons/lib/md/thumbs-up-down';
 
 class HomeScreen extends Component {
     static propTypes = {
@@ -65,22 +67,25 @@ class HomeScreen extends Component {
     render() {
         const { categories, posts } = this.state;
         return (
-            <div>
+            <div className="ListPosts">
                 <div className="myHeader">
                     <h1>Home</h1>
                     <div>
-                        <Link to="/newForm">Add a new post</Link>
-                    </div>
-                    <button className="sorting" onClick={() => this.sortPosts("time")}>Sort posts by time</button>
-                    <button className="sorting" onClick={() => this.sortPosts("votes")}>Sort posts by votes</button>
+                        <Link to="/newForm" style={{ textDecoration: 'none' }}><MdAdd size={25}/> new post</Link>
+                    </div>                                    
                 </div>
+                <div className="Sorting">
+                    <p>Sort posts: </p>
+                    <button onClick={() => this.sortPosts("time")}><FaCalendar size={30}/></button>
+                    <button onClick={() => this.sortPosts("votes")}><ThumbsUpDown size={30}/></button>
+                </div> 
                 {categories.map((category) => (
                     <div key={category.path} className="categories">
-                        <Link to={`/categories/${category.path}`}>
-                            <h3>
+                        <Link to={`/categories/${category.path}`} style={{ textDecoration: 'none' }}>
+                            <h3 className="title">
                                 {category.name}
                             </h3>
-                        </Link>
+                        </Link>                       
                         <div>
                             {posts.filter(post => post.category === category.name).map((post) => (
                                 <div key={post.id} className="post">

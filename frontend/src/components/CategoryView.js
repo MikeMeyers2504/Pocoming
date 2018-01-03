@@ -46,6 +46,7 @@ class Test extends Component {
 	render(){
 		return (
 			<div>
+                <h1>Category view</h1>
                 {this.renderPosts()}
             </div>
 		);

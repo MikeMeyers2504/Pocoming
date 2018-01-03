@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 
-import PostDetail from '../containers/PostDetail';
-import HomeScreen from '../containers/HomeScreen';
-import Form from '../containers/Form';
-import EditForm from '../containers/EditForm';
-import CategoryView from '../containers/CategoryView';
-import newComment from '../containers/AddComment';
-import EditComment from '../containers/EditComment';
+import PostDetail from '../components/PostDetail';
+import HomeScreen from '../components/HomeScreen';
+import Form from '../components/Form';
+import EditForm from '../components/EditForm';
+import CategoryView from '../components/CategoryView';
+import newComment from '../components/AddComment';
+import EditComment from '../components/EditComment';
 
 class App extends Component {
 
